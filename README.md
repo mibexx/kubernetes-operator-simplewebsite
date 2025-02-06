@@ -9,6 +9,9 @@ The **SimpleWebsite** Operator is a Kubernetes operator designed to manage Simpl
   - [Overview](#overview)
   - [Features](#features)
   - [Installation](#installation)
+  - [Usage](#usage)
+    - [Custom Resource Definition (CRD)](#custom-resource-definition-crd)
+    - [Example Custom Resource](#example-custom-resource)
   - [RBAC Configuration](#rbac-configuration)
   - [Contributing](#contributing)
   - [License](#license)
@@ -33,10 +36,13 @@ To install the SimpleWebsite Operator, follow these steps:
    cd simplewebsite-operator
 
 __Apply the provided Kubernetes manifests:__
+
+```bash
 kubectl create ns simplewebsite
 kubectl -n simplewebsite apply -f resources/1_customresource.yaml
 kubectl -n simplewebsite apply -f resources/2_rbac.yaml
 kubectl -n simplewebsite apply -f resources/3_controller.yaml
+```
 
 
 ## Usage
