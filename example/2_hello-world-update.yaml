@@ -1,0 +1,35 @@
+# example_cr.yaml
+apiVersion: mbx360.de/v1
+kind: SimpleWebsite
+metadata:
+  name: hello-world
+  namespace: simplewebsite
+spec:
+  domain: hello-world.mibexx.de
+  siteName: hello-world
+  files:
+    - filename: index.html
+      content: |
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hello World</title>
+        </head>
+        <body>
+            <h1>Hello, World!</h1>
+            <p>Welcome to my Hello World website!</p>
+            <p>Updated - <a href="page2.html">Page 2</a></p>
+        </body>
+        </html>
+    - filename: page2.html
+      content: |
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hello World - Site 2</title>
+        </head>
+        <body>
+            <h1>Hello, World #2!</h1>
+            <p>Welcome to my Hello World website 2!</p>
+        </body>
+        </html>

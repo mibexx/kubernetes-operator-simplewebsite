@@ -1,0 +1,24 @@
+# kubernetes.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplewebsite-operator
+  namespace: simplewebsite
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simplewebsite-operator
+  template:
+    metadata:
+      labels:
+        app: simplewebsite-operator
+    spec:
+      serviceAccountName: simplewebsite-sa
+      imagePullSecrets:
+        - name: docker-secret
+      containers:
+        - name: simplewebsite-operator
+          imagePullPolicy: Always
+          image: docker.mbx360.de/operator/simplewebsite:2.0.0
+          command: ["python", "main.py"]
