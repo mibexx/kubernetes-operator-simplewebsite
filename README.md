@@ -13,7 +13,6 @@ The **SimpleWebsite** Operator is a Kubernetes operator designed to manage Simpl
     - [Custom Resource Definition (CRD)](#custom-resource-definition-crd)
     - [Example Custom Resource](#example-custom-resource)
   - [RBAC Configuration](#rbac-configuration)
-  - [Contributing](#contributing)
   - [License](#license)
 
 ## Overview
@@ -130,12 +129,7 @@ spec:
 ```
 
 ## RBAC Configuration
-The operator requires certain permissions to create and manage resources. Ensure that you have the appropriate RBAC configuration in place as defined in rbac_definition.yaml.
-
-## Contributing
-Contributions are welcome! Please feel free to open issues or submit pull requests.
+The operator requires certain permissions to create and manage resources. Ensure that you have the appropriate RBAC configuration in place as defined in resources/2_rbac.yaml.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-This README provides a clear overview of your SimpleWebsite Operator, guides users through installation and usage, describes the custom resource and its structure, and includes RBAC configuration details. It is structured to facilitate understanding and usage by other developers.
+This project is licensed under the MIT License
