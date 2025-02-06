@@ -32,13 +32,15 @@ To install the SimpleWebsite Operator, follow these steps:
    ```bash
    git clone <repository_url>
    cd simplewebsite-operator
-Build and push the Docker image:
 
-docker build -t docker.mbx360.de/operator/simplewebsite:1.0.0 .
-docker push docker.mbx360.de/operator/simplewebsite:1.0.0
 Apply the provided Kubernetes manifests:
 
-kubectl apply -f kubernetes.yaml
+kubectl create ns simplewebsite
+kubectl -n simplewebsite apply -f resources/1_customresource.yaml
+kubectl -n simplewebsite apply -f resources/2_rbac.yaml
+kubectl -n simplewebsite apply -f resources/3_controller.yaml
+
+
 Usage
 Once the operator is running, you can create instances of the SimpleWebsite custom resource. The operator will automatically manage the associated Kubernetes resources.
 

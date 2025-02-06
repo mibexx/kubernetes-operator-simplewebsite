@@ -15,10 +15,8 @@ spec:
         app: simplewebsite-operator
     spec:
       serviceAccountName: simplewebsite-sa
-      imagePullSecrets:
-        - name: docker-secret
       containers:
         - name: simplewebsite-operator
           imagePullPolicy: Always
-          image: docker.mbx360.de/operator/simplewebsite:2.0.0
+          image: mibexx/k8s-operator-simplewebsite:1.0.0
           command: ["python", "main.py"]
