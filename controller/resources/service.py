@@ -5,9 +5,11 @@ class ServiceManager:
     def __init__(self, core_api_instance, namespace):
         self.core_api_instance = core_api_instance
         self.namespace = namespace
+        self.default_port = 80
 
     def create(self, cr):
         site_name = cr['spec']['siteName']
+        port = cr['spec'].get('port', self.default_port)
         service_name = f"sw-{site_name}"
 
         # Check if the Service already exists
@@ -25,7 +27,7 @@ class ServiceManager:
             metadata=client.V1ObjectMeta(name=service_name, namespace=self.namespace),
             spec=client.V1ServiceSpec(
                 selector={"app": service_name},
-                ports=[client.V1ServicePort(port=80, target_port=80)],
+                ports=[client.V1ServicePort(port=port, target_port=port)],
                 type="ClusterIP"
             )
         )

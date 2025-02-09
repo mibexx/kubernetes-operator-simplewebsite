@@ -18,5 +18,5 @@ spec:
       containers:
         - name: simplewebsite-operator
           imagePullPolicy: Always
-          image: mibexx/k8s-operator-simplewebsite:1.0.0
+          image: mibexx/k8s-operator-simplewebsite:1.2.0
           command: ["python", "main.py"]

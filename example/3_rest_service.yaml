@@ -1,0 +1,30 @@
+# example_cr.yaml
+apiVersion: mbx360.de/v1
+kind: SimpleWebsite
+metadata:
+  name: sw-service
+  namespace: simplewebsite
+spec:
+  domain: sw-service.mibexx.de
+  siteName: sw-service
+  port: 5000
+  image: python:3.9-slim
+  command:                  
+    - /bin/sh
+    - -c
+    - |
+      pip install Flask && python /app/main.py
+  filePaths: /app
+  files:
+    - filename: main.py
+      content: |
+        from flask import Flask
+
+        app = Flask(__name__)
+
+        @app.route('/hello', methods=['GET'])
+        def hello():
+            return "Hello World", 200
+
+        if __name__ == '__main__':
+            app.run(host='0.0.0.0', port=5000)

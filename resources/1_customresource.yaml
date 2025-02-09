@@ -25,6 +25,16 @@ spec:
                   type: string
                 siteName:
                   type: string
+                image:
+                  type: string
+                filePaths:
+                  type: string
+                port:
+                  type: integer
+                command:
+                  type: array
+                  items:
+                    type: string
                 files:
                   type: array
                   items:

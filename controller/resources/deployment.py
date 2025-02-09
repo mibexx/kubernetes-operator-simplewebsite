@@ -5,9 +5,15 @@ class DeploymentManager:
     def __init__(self, apps_api_instance, namespace):
         self.apps_api_instance = apps_api_instance
         self.namespace = namespace
+        self.default_image = "nginx:alpine"
+        self.default_file_path = "/usr/share/nginx/html/"
+        self.default_command = ["nginx", "-g", "daemon off;"]
 
     def create(self, cr):
         site_name = cr['spec']['siteName']
+        image = cr['spec'].get('image', self.default_image)
+        filePath = cr['spec'].get('filePaths', self.default_file_path)
+        command = cr['spec'].get('command', self.default_command)  # Get the command or use the default
         deployment_name = f"sw-{site_name}"
         config_map_name = f"sw-{site_name}"
 
@@ -23,13 +29,13 @@ class DeploymentManager:
         # Define the container and the deployment
         container = client.V1Container(
             name=deployment_name,
-            image="nginx:alpine",
+            image=image,
             ports=[client.V1ContainerPort(container_port=80)],
             volume_mounts=[client.V1VolumeMount(
                 name="config-volume",
-                mount_path="/usr/share/nginx/html/"
+                mount_path=filePath
             )],
-            command=["nginx", "-g", "daemon off;"]
+            command=command
         )
 
         volume = client.V1Volume(

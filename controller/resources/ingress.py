@@ -5,10 +5,12 @@ class IngressManager:
     def __init__(self, networking_api_instance, namespace):
         self.networking_api_instance = networking_api_instance
         self.namespace = namespace
+        self.default_port = 80
 
     def create(self, cr):
         site_name = cr['spec']['siteName']
         domain = cr['spec']['domain']
+        port = cr['spec'].get('port', self.default_port)
         ingress_name = f"sw-{site_name}"
 
         # Check if the Ingress already exists
@@ -44,7 +46,7 @@ class IngressManager:
                                     backend=client.V1IngressBackend(
                                         service=client.V1IngressServiceBackend(
                                             name=f"sw-{site_name}",
-                                            port=client.V1ServiceBackendPort(number=80)
+                                            port=client.V1ServiceBackendPort(number=port)
                                         )
                                     )
                                 )

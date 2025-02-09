@@ -11,13 +11,14 @@ The **SimpleWebsite** Operator is a Kubernetes operator designed to manage Simpl
   - [Installation](#installation)
   - [Usage](#usage)
     - [Custom Resource Definition (CRD)](#custom-resource-definition-crd)
-    - [Example Custom Resource](#example-custom-resource)
+    - [Example Custom Resource (Static Website)](#example-custom-resource-static-website)
+    - [Example Service (Python)](#example-service-python)
   - [RBAC Configuration](#rbac-configuration)
   - [License](#license)
 
 ## Overview
 
-The SimpleWebsite Operator simplifies the deployment of web applications by managing resources like ConfigMaps, Deployments, Services, and Ingress based on custom resources defined by the user. This operator supports the management of static websites hosted on Nginx.
+The SimpleWebsite Operator simplifies the deployment of web applications by managing resources like ConfigMaps, Deployments, Services, and Ingress based on custom resources defined by the user. This operator supports the management of static websites hosted on Nginx or custom services like python rest service by defining own path, image and command.
 
 ## Features
 
@@ -54,7 +55,7 @@ The Custom Resource Definition (CRD) for SimpleWebsite is defined as follows:
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
-  name: simplewebsite.mbx360.de
+  name: simplewebsites.mbx360.de
 spec:
   group: mbx360.de
   names:
@@ -62,7 +63,7 @@ spec:
     listKind: SimpleWebsiteList
     plural: simplewebsites
     singular: simplewebsite
-  scope: Namespaced
+  scope: Namespaced  # or Cluster if it's a cluster-scoped resource
   versions:
     - name: v1
       served: true
@@ -78,6 +79,14 @@ spec:
                   type: string
                 siteName:
                   type: string
+                image:
+                  type: string
+                filePaths:
+                  type: string
+                command:
+                  type: array
+                  items:
+                    type: string
                 files:
                   type: array
                   items:
@@ -89,7 +98,7 @@ spec:
                         type: string
 ```
 
-### Example Custom Resource
+### Example Custom Resource (Static Website)
 
 Here is an example of how to define a SimpleWebsite resource:
 
@@ -127,6 +136,42 @@ spec:
         </body>
         </html>
 ```
+
+### Example Service (Python)
+
+```
+# example_cr.yaml
+apiVersion: mbx360.de/v1
+kind: SimpleWebsite
+metadata:
+  name: sw-service
+  namespace: simplewebsite
+spec:
+  domain: sw-service.mibexx.de
+  siteName: sw-service
+  port: 5000
+  image: python:3.9-slim
+  command:                  
+    - /bin/sh
+    - -c
+    - |
+      pip install Flask && python /app/main.py
+  filePaths: /app
+  files:
+    - filename: main.py
+      content: |
+        from flask import Flask
+
+        app = Flask(__name__)
+
+        @app.route('/hello', methods=['GET'])
+        def hello():
+            return "Hello World", 200
+
+        if __name__ == '__main__':
+            app.run(host='0.0.0.0', port=5000)
+```
+
 
 ## RBAC Configuration
 The operator requires certain permissions to create and manage resources. Ensure that you have the appropriate RBAC configuration in place as defined in resources/2_rbac.yaml.
